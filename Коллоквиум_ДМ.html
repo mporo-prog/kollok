@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Коллоквиум по дискретной математике — Шпаргалка</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #faf8f4;
+    --surface: #ffffff;
+    --surface2: #f5f2ed;
+    --border: #e0d8cc;
+    --text: #2c2418;
+    --text-light: #6b5e4e;
+    --purple: #6b3fa0;
+    --purple-bg: #f3eeff;
+    --purple-border: #c9a8f0;
+    --accent: #8b4513;
+    --accent2: #2c5f2e;
+    --red: #9c1a1a;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d1b69 50%, #6b3fa0 100%);
+    color: white;
+    padding: 40px 40px 36px;
+    text-align: center;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .header p { font-size: 1rem; opacity: 0.8; }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+  .toc h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--purple);
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--purple-border);
+    padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 6px 20px;
+  }
+  .toc a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    border-bottom: 1px dotted transparent;
+    transition: all 0.2s;
+  }
+  .toc a:hover { color: var(--purple); border-bottom-color: var(--purple-border); }
+  .toc a::before { content: "§"; color: var(--purple); font-size: 0.8rem; }
+
+  /* Section */
+  .section {
+    margin-bottom: 36px;
+    background: var(--surface);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .section-header {
+    background: linear-gradient(90deg, #2d1b69 0%, #6b3fa0 100%);
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-header:hover { filter: brightness(1.08); }
+  .section-num {
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    flex: 1;
+  }
+  .section-toggle { font-size: 1.2rem; transition: transform 0.3s; }
+  .section-toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 0 24px 20px; }
+
+  /* Item — определение */
+  .item {
+    border-left: 3px solid var(--border);
+    margin: 18px 0;
+    padding: 14px 18px;
+    background: var(--surface2);
+    border-radius: 0 8px 8px 0;
+    transition: border-color 0.2s;
+  }
+  .item:hover { border-left-color: var(--purple); }
+  .item-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .label-def { background: #e8f4e8; color: #2c5f2e; }
+  .label-thm { background: #fff0e0; color: #8b4513; }
+  .label-proof { background: #f0e8ff; color: #6b3fa0; }
+  .label-ex { background: #e8f0ff; color: #2c4a8b; }
+  .label-lemma { background: #fff8e0; color: #7a5f00; }
+  .label-note { background: #ffe8e8; color: #9c1a1a; }
+
+  .item-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    float: right;
+    font-weight: 600;
+  }
+
+  .item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .item p, .item li { font-size: 0.95rem; color: #3d3028; margin-bottom: 6px; }
+  .item ul, .item ol { padding-left: 20px; }
+  .item li { margin-bottom: 4px; }
+
+  /* КЛЮЧЕВОЕ — фиолетовый */
+  .key {
+    background: var(--purple-bg);
+    border: 1.5px solid var(--purple-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    color: #3a1a6e;
+    font-size: 0.95rem;
+  }
+  .key strong { color: var(--purple); }
+
+  /* Формула */
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 0.88rem;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* Таблица истинности */
+  table {
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    text-align: center;
+  }
+  th { background: var(--purple); color: white; }
+  tr:nth-child(even) { background: var(--surface2); }
+
+  /* Proof */
+  .proof-block {
+    border: 1.5px solid var(--purple-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 14px 0;
+    background: #fcfaff;
+  }
+  .proof-block .proof-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--purple);
+    font-size: 1rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .proof-block .proof-title::before {
+    content: "📋";
+    font-size: 1rem;
+  }
+  .proof-block p { font-size: 0.93rem; margin-bottom: 6px; }
+  .proof-block ol { padding-left: 20px; }
+  .proof-block li { margin-bottom: 6px; font-size: 0.93rem; }
+
+  .sep { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tag {
+    background: var(--purple-bg);
+    color: var(--purple);
+    border: 1px solid var(--purple-border);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.78rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.6rem; }
+    .toc-grid { grid-template-columns: 1fr 1fr; }
+    .section-body { padding: 0 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Дискретная математика</h1>
+  <p>Полный конспект для подготовки к коллоквиуму &nbsp;·&nbsp; ВШЭ 2024/25</p>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <h2>Содержание</h2>
+    <div class="toc-grid">
+      <a href="#logic">1. Логика высказываний</a>
+      <a href="#sets">2. Множества</a>
+      <a href="#quantors">3. Кванторы и отрицания</a>
+      <a href="#induction">4. Индукция и подсчёты</a>
+      <a href="#pairs">5. Упорядоченные пары</a>
+      <a href="#functions">6. Функции</a>
+      <a href="#combinatorics1">7. Комбинаторика (часть 1)</a>
+      <a href="#combinatorics2">8. Биномиальные коэф-ты</a>
+      <a href="#combinatorics3">9. Сочетания с повторениями</a>
+      <a href="#inclusion">10. Формула включений–исключений</a>
+      <a href="#relations">11. Бинарные отношения</a>
+      <a href="#transitive">12. Транзитивное замыкание</a>
+      <a href="#equivalence">13. Отношения эквивалентности</a>
+      <a href="#graphs1">14. Графы: основы</a>
+      <a href="#graphs2">15. Графы: пути и циклы</a>
+      <a href="#digraphs">16. Ориентированные графы</a>
+      <a href="#euler">17. Эйлеровы графы</a>
+      <a href="#trees">18. Деревья</a>
+      <a href="#orders">19. Частичные порядки</a>
+      <a href="#ramsey">20. Теорема Рамсея</a>
+      <a href="#coloring">21. Раскраски и двудольные графы</a>
+      <a href="#matching">22. Паросочетания и покрытия</a>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 1: ЛОГИКА -->
+  <!-- ============================================================ -->
+  <div class="section" id="logic">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">01</div>
+      <div class="section-title">Логика высказываний. Тавтологии</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#1–2</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Таблица истинности логических связок</h3>
+        <table>
+          <tr><th>A</th><th>B</th><th>A∧B</th><th>A∨B</th><th>A→B</th><th>A≡B</th><th>¬A</th></tr>
+          <tr><td>Л</td><td>Л</td><td>Л</td><td>Л</td><td><strong>И</strong></td><td>И</td><td>И</td></tr>
+          <tr><td>Л</td><td>И</td><td>Л</td><td>И</td><td><strong>И</strong></td><td>Л</td><td>И</td></tr>
+          <tr><td>И</td><td>Л</td><td>Л</td><td>И</td><td><strong>Л</strong></td><td>Л</td><td>Л</td></tr>
+          <tr><td>И</td><td>И</td><td>И</td><td>И</td><td><strong>И</strong></td><td>И</td><td>Л</td></tr>
+        </table>
+        <div class="key">
+          <strong>Ключевое:</strong> Импликация A→B <strong>ложна только при A=И, B=Л</strong>. Во всех остальных случаях — истинна. Аргументы не симметричны: A — посылка, B — заключение.
+        </div>
+        <p><strong>Равносильные высказывания:</strong> два высказывания, принимающие одинаковые логические значения при одинаковых значениях элементарных высказываний. Связываются знаком ≡.</p>
+        <p><strong>Тавтология:</strong> высказывание, истинное при любых значениях входящих в него элементарных высказываний.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#3–4</span>
+        <span class="item-label label-thm">Тавтологии</span>
+        <h3>Коммутативность, ассоциативность, тавтологии упрощения</h3>
+        <div class="formula">Коммутативность:    A∧B ≡ B∧A,   A∨B ≡ B∨A
+Ассоциативность:   (A∧B)∧C ≡ A∧(B∧C),   (A∨B)∨C ≡ A∨(B∨C)
+
+Упрощения для ∧:   X∧Л ≡ Л,   X∧И ≡ X
+Упрощения для ∨:   X∨Л ≡ X,   X∨И ≡ И
+Упрощения для →:   X→И ≡ И,   Л→X ≡ И,   X→Л ≡ ¬X,   И→X ≡ X</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#5</span>
+        <span class="item-label label-thm">Тавтологии</span>
+        <h3>Modus ponens и дистрибутивность</h3>
+        <div class="key">
+          <strong>Modus ponens (правило отсечения):</strong><br>
+          A ∧ (A → B) → B
+        </div>
+        <div class="formula">Дистрибутивность:
+  A ∧ (B ∨ C) ≡ (A∧B) ∨ (A∧C)
+  A ∨ (B ∧ C) ≡ (A∨B) ∧ (A∨C)</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство дистрибутивности A∧(B∨C) ≡ (A∧B)∨(A∧C)</div>
+          <p>Разбираем два случая:</p>
+          <ol>
+            <li><strong>A = Л:</strong> Левая часть = Л. Правая = Л∨Л = Л. ✓</li>
+            <li><strong>A = И:</strong> Левая = И∧(B∨C) = B∨C. Правая = (И∧B)∨(И∧C) = B∨C. ✓</li>
+          </ol>
+        </div>
+        <div class="proof-block">
+          <div class="proof-title">Важнейшие тавтологии для доказательств</div>
+          <div class="formula">Транзитивность →:  (A→B)∧(B→C) → (A→C)
+Контрапозиция:     A→B ≡ ¬B→¬A
+Законы де Моргана: ¬(A∧B) ≡ ¬A∨¬B
+                   ¬(A∨B) ≡ ¬A∧¬B
+Отрицание →:       ¬(A→B) ≡ A∧¬B
+Представление →:   A→B ≡ ¬A∨B</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 2: МНОЖЕСТВА -->
+  <!-- ============================================================ -->
+  <div class="section" id="sets">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">02</div>
+      <div class="section-title">Множества и операции над ними</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#6</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Равные множества. Подмножество. Пустое множество.</h3>
+        <div class="formula">A = B  ⟺  ∀x(x∈A ≡ x∈B)
+A ⊆ B  ⟺  ∀x(x∈A → x∈B)
+∅ — множество, не содержащее ни одного элемента; x∈∅ ложно для любого x</div>
+        <div class="key"><strong>Единственность пустого множества:</strong> Если бы было два разных пустых множества ∅₁ и ∅₂, то в одном из них был бы элемент, которого нет в другом. Но в пустых нет ничего — различить их невозможно. Значит, пустое множество единственно.</div>
+        <p><strong>Парадокс Рассела:</strong> Рассмотрим A = {x : x∉x}. Тогда A∈A ≡ A∉A — противоречие. Вывод: такого множества не существует; не всё является множеством.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#7</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Операции над множествами</h3>
+        <div class="formula">Объединение:         x∈A∪B  ≡  (x∈A)∨(x∈B)
+Пересечение:         x∈A∩B  ≡  (x∈A)∧(x∈B)
+Разность:            x∈A\B  ≡  (x∈A)∧¬(x∈B)
+Симм. разность:      x∈A△B  ≡  (x∈A)∧¬(x∈B) ∨ ¬(x∈A)∧(x∈B)
+Дополнение (до U):   Ā = U\A</div>
+        <div class="key"><strong>Связь с логикой:</strong> Теоретико-множественным тождествам отвечают логические тавтологии (и наоборот). Пример: (A∩B)\C = (A\C)∩B ↔ (A∧B)∧¬C ≡ (A∧¬C)∧B — тавтология (ассоциативность+коммутативность конъюнкции).</div>
+        <p>Характеристические функции операций: χ<sub>A∩B</sub> = χ<sub>A</sub>·χ<sub>B</sub>, χ<sub>Ā</sub> = 1−χ<sub>A</sub>, χ<sub>A\B</sub> = χ<sub>A</sub>·(1−χ<sub>B</sub>), χ<sub>A∪B</sub> = 1−(1−χ<sub>A</sub>)(1−χ<sub>B</sub>)</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 3: КВАНТОРЫ -->
+  <!-- ============================================================ -->
+  <div class="section" id="quantors">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">03</div>
+      <div class="section-title">Кванторы, отрицания, ограниченные кванторы</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#8–9</span>
+        <span class="item-label label-thm">Правила</span>
+        <h3>Отрицание выражений с кванторами и связками</h3>
+        <div class="formula">Законы де Моргана для кванторов:
+  ¬∀x A(x) ≡ ∃x ¬A(x)
+  ¬∃x A(x) ≡ ∀x ¬A(x)
+
+Отрицание импликации:
+  ¬(A→B) ≡ A∧¬B
+
+Ограниченные кванторы:
+  ∀x∈A B(x)  ≡  ∀x(x∈A → B(x))
+  ∃x∈A B(x)  ≡  ∃x(x∈A ∧ B(x))
+
+Квантор ∃!:
+  ∃!x A(x) ≡ ∃x(A(x) ∧ ∀y(A(y)→x=y))</div>
+        <div class="key"><strong>Важно:</strong> Квантор ∀ над пустым множеством истинен автоматически (посылка импликации всегда ложна). Элементы пустого множества обладают любыми свойствами.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 4: ИНДУКЦИЯ -->
+  <!-- ============================================================ -->
+  <div class="section" id="induction">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">04</div>
+      <div class="section-title">Математическая индукция. Правила суммы и произведения</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#10–11</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Конечное множество. Подсчёт. Правила суммы и произведения</h3>
+        <p><strong>Неформально:</strong> Множество конечно, если его элементы можно пересчитать. Результат подсчёта — мощность множества, |A|.</p>
+        <p><strong>Декартово произведение A×B</strong> — множество всех упорядоченных пар (a,b), a∈A, b∈B.</p>
+        <div class="key">
+          <strong>Правило суммы:</strong> A∩B=∅ ⟹ |A∪B| = |A|+|B|<br>
+          <strong>Правило произведения:</strong> |A×B| = |A|·|B|
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#12–13</span>
+        <span class="item-label label-thm">Принципы</span>
+        <h3>Принцип математической индукции</h3>
+        <div class="key"><strong>Принцип математической индукции:</strong><br>
+        Если A(0) истинно и ∀n(A(n)→A(n+1)) истинно, то A(n) истинно для любого n∈ℕ.</div>
+        <p>Запись: A(0) ∧ ∀n(A(n)→A(n+1)) → ∀n A(n)</p>
+        <div class="key"><strong>Принцип полной математической индукции:</strong><br>
+        Если ∀n((∀k&lt;n A(k)) → A(n)) истинно, то A(n) истинно для любого n∈ℕ.<br>
+        (База вытекает автоматически: при n=0 посылка — квантор по пустому множеству — истинна.)</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство правила произведения по индукции</div>
+          <p>По индукции по |A|.</p>
+          <p><strong>База:</strong> |A|=1. A×B ↔ B через взаимно-однозначное соответствие (a₀,b)↔b. Значит |A×B| = |B| = 1·|B|.</p>
+          <p><strong>Шаг:</strong> Выделим элемент a₀∈A, A₀=A\{a₀}. Тогда A×B = ({a₀}×B) ∪ (A₀×B) — непересекающееся объединение. По правилу суммы: |A×B| = |{a₀}×B| + |A₀×B| = |B| + |A₀|·|B| = (1+n)|B| = |A|·|B|. □</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 5: УПОРЯДОЧЕННЫЕ ПАРЫ -->
+  <!-- ============================================================ -->
+  <div class="section" id="pairs">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">05</div>
+      <div class="section-title">Упорядоченные пары. Бинарные отношения</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#14–15</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Упорядоченная пара по Куратовскому. Бинарное отношение</h3>
+        <div class="key"><strong>Определение Куратовского:</strong> (x,y) := {{x},{x,y}}</div>
+        <div class="proof-block">
+          <div class="proof-title">Основное свойство: (x₁,y₁) = (x₂,y₂) ⟺ x₁=x₂ и y₁=y₂</div>
+          <p><strong>Случай 1: x₁=y₁.</strong> Тогда (x₁,y₁)={{x₁}}. Следовательно, {{x₂},{x₂,y₂}} — одноэлементное множество, значит x₂=y₂. Из {{x₁}}={{x₂}} получаем x₁=x₂=y₁=y₂.</p>
+          <p><strong>Случай 2: x₁≠y₁.</strong> {x₁,y₁} двухэлементное, должно равняться {x₂,y₂}. Одноэлементное {x₁}={x₂}. Отсюда x₁=x₂ и y₁=y₂. □</p>
+        </div>
+        <p><strong>Бинарное отношение R на A,B</strong> — подмножество декартова произведения A×B. Запись: (x,y)∈R или xRy.</p>
+        <p><strong>Бинарное отношение на A</strong> — подмножество A×A.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 6: ФУНКЦИИ -->
+  <!-- ============================================================ -->
+  <div class="section" id="functions">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">06</div>
+      <div class="section-title">Функции. Инъекции, сюръекции, биекции. Композиция</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#16–17</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Функция. Область определения. Область значений. Тотальная функция</h3>
+        <p><strong>Функция f: A→B</strong> — бинарное отношение f⊆A×B, для которого каждый a∈A встречается не более чем в одной паре (a,b)∈f.</p>
+        <p><strong>Область определения:</strong> Dom(f) = {x∈A | ∃y∈B: (x,y)∈f}</p>
+        <p><strong>Область значений:</strong> Range(f) = {y∈B | ∃x∈A: (x,y)∈f}</p>
+        <div class="key"><strong>Тотальная (всюду определённая) функция:</strong> Dom(f) = A.</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#18–20</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Инъекция. Сюръекция. Биекция. Обратная функция</h3>
+        <div class="key">
+          <strong>Инъекция:</strong> f — тотальная, f(x₁)=f(x₂) ⟹ x₁=x₂ (разные аргументы → разные значения).<br>
+          <strong>Сюръекция:</strong> f — тотальная, Range(f)=B (каждое значение достигается).<br>
+          <strong>Биекция:</strong> f — и инъекция, и сюръекция (взаимно однозначное соответствие).
+        </div>
+        <p><strong>Примеры инъекции:</strong> f:ℕ→ℕ, f(x)=x² — инъекция (из x₁²=x₂² следует x₁=x₂ для натуральных).</p>
+        <p><strong>Примеры не инъекции:</strong> g:ℝ→ℝ, g(x)=x² — не инъекция (g(-1)=g(1)=1).</p>
+        <p><strong>Обратная функция:</strong> Для биекции f:A→B определяется f⁻¹:B→A по правилу (x,y)∈f ⟺ (y,x)∈f⁻¹.</p>
+        <div class="proof-block">
+          <div class="proof-title">Теорема: Если f — биекция, то f⁻¹ — тоже биекция</div>
+          <p>Проверяем все свойства f⁻¹:</p>
+          <ul>
+            <li><strong>f⁻¹ — функция:</strong> из инъективности f. Если (y,x₁)∈f⁻¹ и (y,x₂)∈f⁻¹, то (x₁,y)∈f и (x₂,y)∈f → x₁=x₂ по инъективности f.</li>
+            <li><strong>f⁻¹ тотальна:</strong> из сюръективности f. ∀y∈B ∃x∈A: f(x)=y → (y,x)∈f⁻¹.</li>
+            <li><strong>f⁻¹ инъективна:</strong> из определения функции f. Если f(y₁,x)∈f и (y₂,x)∈f⁻¹, то (x,y₁),(x,y₂)∈f → y₁=y₂.</li>
+            <li><strong>f⁻¹ сюръективна:</strong> из тотальности f. ∀x∈A ∃y∈B: (x,y)∈f → (y,x)∈f⁻¹. □</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#21–22</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Композиция. Образ и полный прообраз</h3>
+        <div class="formula">Композиция g∘f: (x,z)∈g∘f ⟺ ∃y∈B: (x,y)∈f и (y,z)∈g
+
+Образ:          f[X] = {b∈B | ∃x∈X: b=f(x)}
+Полный прообраз: f⁻¹[Y] = {a∈A | f(a)∈Y}</div>
+        <div class="key"><strong>Ассоциативность композиции:</strong> (f∘g)∘h = f∘(g∘h)</div>
+        <div class="key"><strong>Лемма о сохранении классов функций при композиции:</strong> если f и g тотальны (инъективны / сюръективны / биективны), то g∘f тоже тотальна (инъективна / сюръективна / биективна).</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#23</span>
+        <span class="item-label label-thm">Утверждение 5.7</span>
+        <h3>Мощность полного прообраза через мощности прообразов элементов</h3>
+        <div class="key">Если f:A→B тотальна, то |f⁻¹[Y]| = Σ<sub>b∈Y</sub> |f⁻¹[{b}]|</div>
+        <p>Следует из того, что прообразы разных точек не пересекаются, и правила суммы.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 7: КОМБИНАТОРИКА-1 -->
+  <!-- ============================================================ -->
+  <div class="section" id="combinatorics1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">07</div>
+      <div class="section-title">Комбинаторика (часть 1): последовательности, Дирихле, размещения</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#24</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Начальный отрезок ℕ. Конечная и бесконечная последовательности</h3>
+        <p><strong>Начальный отрезок:</strong> [n] = {x : x&lt;n, x∈ℕ} = {0,1,...,n-1}</p>
+        <p><strong>Конечная последовательность</strong> элементов A (слово в алфавите A) — тотальная функция [n]→A.</p>
+        <p><strong>Бесконечная последовательность</strong> — тотальная функция ℕ→A.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#25–26</span>
+        <span class="item-label label-thm">Принцип Дирихле</span>
+        <h3>Принцип Дирихле. Конечное множество. Мощность</h3>
+        <div class="key"><strong>Принцип Дирихле (принцип кроликов):</strong> Если k > n кроликов рассажены по n клеткам, то хотя бы в одной клетке сидит хотя бы два кролика.</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство принципа Дирихле</div>
+          <p>Предположим противное: r₁,…,rₙ ≤ 1 для всех i. Тогда r₁+…+rₙ ≤ n. Но по условию r₁+…+rₙ = k > n. Противоречие. □</p>
+        </div>
+        <p><strong>Конечное множество A:</strong> существует биекция f:[n]→A для некоторого n∈ℕ. Число n называется мощностью |A|.</p>
+        <div class="proof-block">
+          <div class="proof-title">Корректность определения мощности: если f:[n]→A и g:[m]→A — биекции, то n=m</div>
+          <p>Предположим n>m. Тогда g⁻¹∘f:[n]→[m] — биекция. По принципу Дирихле (n>m кроликов по m клеткам) найдутся i≠j: g⁻¹∘f(i)=g⁻¹∘f(j). Противоречие с инъективностью. □</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#27–28</span>
+        <span class="item-label label-thm">Лемма 5.13, 5.14</span>
+        <h3>Сравнение конечных множеств. Лемма о тотальной функции из множества в себя</h3>
+        <div class="key">
+          <strong>Лемма 5.13:</strong> Для тотальных функций на конечных множествах:<br>
+          • f:A→B инъекция ⟹ |A| ≤ |B|<br>
+          • f:A→B сюръекция ⟹ |A| ≥ |B|<br>
+          • f:A→B биекция ⟹ |A| = |B|
+        </div>
+        <div class="key">
+          <strong>Лемма 5.14:</strong> Если A — конечное множество, f:A→A тотальная:<br>
+          • f инъекция ⟹ f сюръекция<br>
+          • f сюръекция ⟹ f инъекция<br>
+          (Для проверки биекции достаточно одного из двух!)
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#29</span>
+        <span class="item-label label-thm">Формулы</span>
+        <h3>Подсчёт слов и функций</h3>
+        <div class="key">
+          • Слов длины n в алфавите из k символов: k<sup>n</sup><br>
+          • Тотальных функций из n-элементного в k-элементное: k<sup>n</sup><br>
+          • Всех функций (включая частичные) из n-элементного в k-элементное: (k+1)<sup>n</sup>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#30–31</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Размещения. Перестановки</h3>
+        <p><strong>Размещение из n по k</strong> — слово длины k из n символов без повторений. Число размещений A<sub>n</sub><sup>k</sup>.</p>
+        <div class="key">A<sub>n</sub><sup>k</sup> = n(n−1)(n−2)···(n−k+1) = n!/(n−k)!</div>
+        <p><strong>Перестановка</strong> n-элементного множества — биекция f:A→A. Число перестановок P<sub>n</sub>.</p>
+        <div class="key">P<sub>n</sub> = n! (частный случай A<sub>n</sub><sup>n</sup> = n!/0! = n!)</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#32</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Сочетания</h3>
+        <p><strong>Сочетание из n по k</strong> — k-элементное подмножество n-элементного множества. Число C<sub>n</sub><sup>k</sup>.</p>
+        <div class="key">C<sub>n</sub><sup>k</sup> = n! / (k!(n-k)!)</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство формулы для сочетаний</div>
+          <p>Строим функцию f: размещения → сочетания: (x₁,...,xₖ)↦{x₁,...,xₖ}. Она сюръективна. Прообраз каждого сочетания S: количество способов упорядочить k элементов = k!. По утверждению 5.7: A<sub>n</sub><sup>k</sup> = C<sub>n</sub><sup>k</sup>·k!. Отсюда C<sub>n</sub><sup>k</sup> = A<sub>n</sub><sup>k</sup>/k! = n!/(k!(n-k)!). □</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 8: БИНОМИАЛЬНЫЕ КОЭФФИЦИЕНТЫ -->
+  <!-- ============================================================ -->
+  <div class="section" id="combinatorics2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">08</div>
+      <div class="section-title">Биномиальные коэффициенты. Треугольник Паскаля. Числа Фибоначчи</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#33</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Индикаторная функция. Подмножества и индикаторные функции</h3>
+        <div class="formula">χ_S(x) = 1 если x∈S, иначе 0</div>
+        <div class="key"><strong>Биекция:</strong> S ↦ χ_S устанавливает взаимно-однозначное соответствие между подмножествами X и функциями X→{0,1}. Число подмножеств n-элементного множества = 2<sup>n</sup>.</div>
+        <div class="proof-block">
+          <div class="proof-title">Тождество C₀ₙ + C¹ₙ + ... + Cⁿₙ = 2ⁿ (комбинаторное доказательство)</div>
+          <p>Подмножества n-элементного множества делятся на: пустые (C₀ₙ), одноэлементные (C¹ₙ), ..., n-элементные (Cⁿₙ). По правилу суммы: сумма = 2ⁿ.</p>
+          <p><strong>Аналитическое доказательство:</strong> Подставим x=y=1 в бином Ньютона: (1+1)ⁿ = Σ C<sup>k</sup>ₙ = 2ⁿ. □</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#34</span>
+        <span class="item-label label-thm">Бином Ньютона</span>
+        <h3>Биномиальная формула. Биномиальные коэффициенты = числа сочетаний</h3>
+        <div class="key">(x+y)ⁿ = Σₖ₌₀ⁿ C(n,k) · x<sup>k</sup>y<sup>n-k</sup>, где C(n,k) = C<sub>n</sub><sup>k</sup></div>
+        <div class="proof-block">
+          <div class="proof-title">Теорема: C(n,k) = Cⁿₖ</div>
+          <p>При раскрытии (x+y)ⁿ получаем 2ⁿ слагаемых (слова длины n из {x,y}). После приведения подобных: коэффициент при xᵏyⁿ⁻ᵏ = количество слов с k буквами x = C<sub>n</sub><sup>k</sup>. □</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#35</span>
+        <span class="item-label label-thm">Треугольник Паскаля</span>
+        <h3>Свойства треугольника Паскаля. Монотонные пути</h3>
+        <div class="key">C(n,k) = C(n-1,k-1) + C(n-1,k) — каждое число (кроме крайних единиц) = сумма двух чисел выше.</div>
+        <p><strong>Монотонные пути в квадранте:</strong> Число путей из (0,0) в (a,b) при ходах (+1,0) и (0,+1):</p>
+        <div class="key">T(a,b) = C(a+b, a) = (a+b)!/(a!·b!)</div>
+        <div class="proof-block">
+          <div class="proof-title">Связь с треугольником Паскаля</div>
+          <p>Построим биекцию: слово длины a+b с a буквами x и b буквами y ↔ путь (x=+1 по горизонтали, y=+1 по вертикали). Количество таких слов = C(a+b,a). Числа T(a,b) совпадают со строками треугольника Паскаля (повёрнутого на 135°).</p>
+        </div>
+        <p><strong>Симметрия строк Паскаля:</strong> C(n,k) = C(n,n-k) — из формулы (перестановка k! и (n-k)!) или биекция «подмножество ↔ дополнение».</p>
+        <p><strong>Возрастание в первой половине строки:</strong> C(n,k) > C(n,k-1) ⟺ 2k &lt; n+1.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#36</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Числа Фибоначчи: определение и явная формула</h3>
+        <div class="formula">F₀ = 0, F₁ = 1, Fₙ₊₂ = Fₙ₊₁ + Fₙ
+
+                    ψⁿ − ϕⁿ       1+√5          1−√5
+Явная формула: Fₙ = ——————,  ψ = ————,  ϕ = ————
+                      √5            2             2</div>
+        <div class="key">Связь с путями: число монотонных путей из 0 в n ходами на 1 или 2 клетки = Fₙ₊₁ (числа Фибоначчи). Рекуррентность Hₙ₊₂ = Hₙ₊₁ + Hₙ.</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#37</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Мультиномиальные коэффициенты</h3>
+        <div class="key">C(n; a₁,a₂,...,aₖ) = n! / (a₁!a₂!···aₖ!), где a₁+a₂+...+aₖ = n</div>
+        <p>Это число слов длины n, в которых a₁ букв x₁, a₂ букв x₂, ..., aₖ букв xₖ.</p>
+        <div class="proof-block">
+          <div class="proof-title">Два доказательства формулы</div>
+          <p><strong>1. Комбинаторное:</strong> n! слов с различными буквами. Каждое слово посчитано a₁!·a₂!···aₖ! раз (перестановки одинаковых букв). Итого: n!/(a₁!···aₖ!).</p>
+          <p><strong>2. Алгебраическое:</strong> Выбираем места для x₁: C(n,a₁) способов. Для x₂: C(n-a₁,a₂) способов. И т.д. Произведение всех биномиальных коэффициентов после сокращения даёт n!/(a₁!···aₖ!). □</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 9: СОЧЕТАНИЯ С ПОВТОРЕНИЯМИ -->
+  <!-- ============================================================ -->
+  <div class="section" id="combinatorics3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">09</div>
+      <div class="section-title">Сочетания с повторениями. Мультимножества</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#38–39</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Сочетания с повторениями</h3>
+        <p><strong>Через разложение:</strong> Число слагаемых в (x₁+...+xₙ)ᵏ = число мономов степени k = число решений a₁+...+aₙ=k в натуральных числах.</p>
+        <p><strong>Через мультимножества:</strong> Мультимножество с элементами из n-элементного множества размера k — каждый элемент входит с некоторой кратностью, сумма кратностей = k.</p>
+        <div class="key">Число сочетаний с повторениями = ((n,k)) = C(n+k-1, k)</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство формулы (монеты и перегородки)</div>
+          <p>Разложим k монет между n людьми (a₁+...+aₙ=k). Выстраиваем k монет и разделяем (n-1) перегородками. Всего позиций n+k-1, из них k — монеты. Биекция с k-элементными подмножествами (n+k-1)-элементного множества. Итого C(n+k-1, k). □</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 10: ФОРМУЛА ВКЛ-ИСКЛ -->
+  <!-- ============================================================ -->
+  <div class="section" id="inclusion">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">10</div>
+      <div class="section-title">Формула включений-исключений. Сюръекции. Беспорядки</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#40</span>
+        <span class="item-label label-thm">Формула</span>
+        <h3>Формула включений-исключений</h3>
+        <div class="formula">|A₁∪A₂∪...∪Aₙ| = Σ|Aᵢ| − Σ|Aᵢ∩Aⱼ| + Σ|Aᵢ∩Aⱼ∩Aₖ| − ...
+                         = Σ (−1)^(|J|+1) |A_J|</div>
+        <div class="key">Для 2 множеств: |A∪B| = |A|+|B|−|A∩B|<br>
+        Для 3 множеств: |A∪B∪C| = |A|+|B|+|C|−|A∩B|−|A∩C|−|B∩C|+|A∩B∩C|</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство через индикаторные функции</div>
+          <p>χ_A(x) = 1−(1−χ_A₁(x))···(1−χ_Aₙ(x)). Раскрываем скобки: каждое слагаемое = (−1)^(|J|+1)·χ_{A_J}(x). Суммируем по всему пространству — получаем формулу включений-исключений. □</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#42</span>
+        <span class="item-label label-thm">Формула</span>
+        <h3>Число сюръекций</h3>
+        <div class="key">Surj(n,k) = Σₚ₌₀ᵏ (−1)ᵖ C(k,p) (k−p)ⁿ</div>
+        <p>Доказательство: из kⁿ тотальных функций вычитаем не-сюръекции по формуле включений-исключений. A(i) = функции, не принимающие значение i, |A(i)|=(k-1)ⁿ. Пересечение p множеств: (k-p)ⁿ.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#43</span>
+        <span class="item-label label-thm">Формула</span>
+        <h3>Число разбиений на k непустых классов</h3>
+        <div class="key">Φ(n,k) = Surj(n,k) / k!</div>
+        <p>Разбиение n предметов по k одинаковым коробкам ↔ помеченное разбиение / k! (число перестановок коробок).</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#44</span>
+        <span class="item-label label-thm">Беспорядки</span>
+        <h3>Число беспорядков на n-элементном множестве</h3>
+        <p><strong>Беспорядок</strong> — перестановка без неподвижных точек (aᵢ≠i для всех i).</p>
+        <div class="key">D(n) = n! · Σₖ₌₀ⁿ (−1)ᵏ/k!</div>
+        <div class="key">Доля беспорядков → 1/e ≈ 0.368 при n→∞</div>
+        <p>Доказательство: Bᵢ = перестановки с aᵢ=i. По ФВИ: |B₁∪...∪Bₙ| = Σ(−1)^(k+1) C(n,k)(n-k)!. Беспорядков = n! − |объединения| = n!·Σ(−1)ᵏ/k!.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 11: БИНАРНЫЕ ОТНОШЕНИЯ -->
+  <!-- ============================================================ -->
+  <div class="section" id="relations">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">11</div>
+      <div class="section-title">Бинарные отношения: свойства, матрицы, операции</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#45–46</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Операции над бинарными отношениями. Область определения и значений</h3>
+        <p>С отношениями можно делать теоретико-множественные операции (∩, ∪, \).</p>
+        <div class="formula">Dom(R) = {x∈A | ∃y∈B: (x,y)∈R}
+Range(R) = {y∈B | ∃x∈A: (x,y)∈R}
+
+Обратное отношение: R⁻¹ = {(b,a) | (a,b)∈R}
+Композиция: R₂∘R₁ = {(a,c) | ∃b: (a,b)∈R₁ ∧ (b,c)∈R₂}</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#47</span>
+        <span class="item-label label-thm">Утверждение 9.5</span>
+        <h3>Свойства обратного отношения и композиции</h3>
+        <ul>
+          <li>Dom(R⁻¹) = Range(R), Range(R⁻¹) = Dom(R)</li>
+          <li>(R⁻¹)⁻¹ = R</li>
+          <li>Ассоциативность: T∘(S∘R) = (T∘S)∘R</li>
+          <li>(S∘R)⁻¹ = R⁻¹∘S⁻¹</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#48</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Свойства бинарных отношений на множестве A</h3>
+        <div class="key">
+          <strong>Рефлексивность:</strong> ∀x: (x,x)∈R (idₐ⊆R)<br>
+          <strong>Антирефлексивность:</strong> ∀x: (x,x)∉R (idₐ∩R=∅)<br>
+          <strong>Симметричность:</strong> (x,y)∈R ⟹ (y,x)∈R (R⁻¹=R)<br>
+          <strong>Антисимметричность:</strong> (x,y)∈R и (y,x)∈R ⟹ x=y (R⁻¹∩R⊆idₐ)<br>
+          <strong>Транзитивность:</strong> (x,y)∈R и (y,z)∈R ⟹ (x,z)∈R
+        </div>
+        <div class="key"><strong>Критерий транзитивности (утв. 9.7):</strong> R транзитивно ⟺ R∘R⊆R</div>
+        <p>Примеры: одновременно реф. и антиреф. — только пустое отношение на пустом множестве. Одновременно сим. и антисим. — R⊆idₐ. Пустое и одноэлементное отношения транзитивны.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#49–50</span>
+        <span class="item-label label-thm">Матрицы и графы</span>
+        <h3>Задание отношения матрицей. Свойства в терминах матриц и орграфов</h3>
+        <p>Матрица бинарного отношения: M[i][j]=1, если (aᵢ,bⱼ)∈R, иначе 0.</p>
+        <div class="formula">Обратное отношение ↔ транспонирование матрицы M^T
+Композиция R₂∘R₁ ↔ булево произведение матриц M_{R₁}·M_{R₂}
+  (перемножаем как обычно, затем 1 везде где ≥1)
+
+В графе:
+  • рефлексивность ↔ петли у каждой вершины
+  • симметричность ↔ у каждой стрелки есть обратная
+  • транзитивность ↔ для стрелок (x→y) и (y→z) есть (x→z)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 12: ТРАНЗИТИВНОЕ ЗАМЫКАНИЕ -->
+  <!-- ============================================================ -->
+  <div class="section" id="transitive">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">12</div>
+      <div class="section-title">Транзитивное замыкание</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#51–52</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Транзитивное замыкание R*</h3>
+        <div class="key"><strong>R*</strong> — наименьшее транзитивное отношение, содержащее R. Три условия: R⊆R*, R* транзитивно, ∀ транзитивного T⊇R: R*⊆T.</div>
+        <p><strong>Свойства (утв. 10.3):</strong></p>
+        <ul>
+          <li>Если R транзитивно, то R* = R</li>
+          <li>R** = R*</li>
+        </ul>
+        <div class="proof-block">
+          <div class="proof-title">Теорема 10.7: R* = R ∪ R² ∪ R³ ∪ ...</div>
+          <p>Обозначим T = R∪R²∪.... Доказываем T = R*:</p>
+          <ol>
+            <li><strong>T транзитивно:</strong> Если (x,y)∈Rᵏ и (y,z)∈Rˢ, то (x,z)∈Rᵏ⁺ˢ⊆T. ✓</li>
+            <li><strong>R⊆T:</strong> очевидно, T = R¹∪R²∪... ⊇ R. ✓</li>
+            <li><strong>R*⊆T:</strong> поскольку T транзитивно и R⊆T, из определения R* следует R*⊆T.</li>
+            <li><strong>T⊆R*:</strong> доказываем индукцией, что Rⁿ⊆R* для всех n. База: R¹=R⊆R*. Шаг: если (x,z)∈Rⁿ⁺¹=R∘Rⁿ, то ∃y: (x,y)∈Rⁿ⊆R* и (y,z)∈R⊆R*. По транзитивности R*: (x,z)∈R*. □</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 13: ЭКВИВАЛЕНТНОСТЬ -->
+  <!-- ============================================================ -->
+  <div class="section" id="equivalence">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">13</div>
+      <div class="section-title">Отношения эквивалентности и классы</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#53–54</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Отношение эквивалентности. Классы эквивалентности</h3>
+        <div class="key"><strong>Отношение эквивалентности</strong> — рефлексивное, симметричное и транзитивное отношение.</div>
+        <p>Примеры: равенство (idₐ), отношение «иметь тех же родителей», совпадение остатков от деления на n.</p>
+        <div class="proof-block">
+          <div class="proof-title">Теорема 10.15: R эквивалентность ⟹ делит A на классы эквивалентности</div>
+          <p>Определим C(x) = {y : xRy}. Проверим три условия:</p>
+          <ol>
+            <li><strong>A = ∪C(x):</strong> Из рефлексивности x∈C(x). ✓</li>
+            <li><strong>C(x)∩C(y)=∅ или C(x)=C(y):</strong> Пусть z∈C(x)∩C(y), т.е. xRz и yRz. По симметричности zRy, по транзитивности xRy. Тогда для любого t∈C(y): yRt ⟹ xRt (транзитивность), т.е. t∈C(x), значит C(y)⊆C(x). Аналогично C(x)⊆C(y).</li>
+            <li><strong>C(x)=C(y) ⟺ xRy:</strong> Из xRy: x,y∈C(x), то есть C(y)=C(x). Обратно: если C(x)=C(z), то y∈C(z) и zRy, xRz (по симметричности), значит xRy. □</li>
+          </ol>
+        </div>
+        <p>Построение отношения эквивалентности по разбиению: A = ∪Aᵢ (дизъюнктное) → (x,y)∈R ⟺ ∃i: x,y∈Aᵢ. Это отношение эквивалентности (проверка рефлексивности, симметричности, транзитивности очевидна).</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 14: ГРАФЫ-ОСНОВЫ -->
+  <!-- ============================================================ -->
+  <div class="section" id="graphs1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">14</div>
+      <div class="section-title">Графы: определения, степени вершин, связность</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#55</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Простой неориентированный граф. Матрицы смежности и инцидентности</h3>
+        <p><strong>Простой неориентированный граф</strong> G = (V, E): V — конечное множество вершин, E ⊆ {2-элементные подмножества V} — множество рёбер. (Нет петель, нет кратных рёбер.)</p>
+        <p><strong>Матрица смежности:</strong> M[i][j]=1 если {i,j}∈E, иначе 0. Размер n×n, симметричная с нулями на диагонали.</p>
+        <p><strong>Матрица инцидентности:</strong> M[i][j]=1 если вершина i инцидентна ребру j. Размер n×m.</p>
+        <div class="key">Связь с отношениями: граф ↔ симметричное антирефлексивное отношение на конечном множестве.</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#56</span>
+        <span class="item-label label-thm">Теоремы</span>
+        <h3>Степень вершины. Теорема о сумме степеней. Лемма о рукопожатиях</h3>
+        <p><strong>Степень d(v)</strong> — количество рёбер, инцидентных v (количество соседей v).</p>
+        <div class="key"><strong>Теорема о сумме степеней:</strong> Σ d(v) = 2|E|</div>
+        <p>Доказательство: считаем единицы в матрице инцидентности по строкам (=Σd(v)) и по столбцам (=2|E|, т.к. у каждого ребра 2 конца). □</p>
+        <div class="key"><strong>Лемма о рукопожатиях:</strong> В любом графе количество вершин с нечётной степенью чётно.</div>
+        <p>Следует из теоремы: 2|E| чётно, значит сумма нечётных слагаемых (степеней нечётных вершин) чётна, значит их количество чётно.</p>
+        <p>Полный граф Kₙ: n вершин, C(n,2) = n(n-1)/2 рёбер, d(v)=n-1.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#57–58</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Путь. Связность. Отношение достижимости. Компоненты связности</h3>
+        <p><strong>Путь:</strong> последовательность вершин v₀,v₁,...,vₜ, где {vᵢ,vᵢ₊₁}∈E. Начало=v₀, конец=vₜ, длина=t.</p>
+        <p><strong>Связанные вершины:</strong> между ними существует путь. Граф <strong>связный</strong>, если все вершины связанные.</p>
+        <div class="key"><strong>Отношение достижимости R</strong>: (u,v)∈R ⟺ существует путь из u в v. Оно рефлексивно, симметрично, транзитивно (т.е. является отношением эквивалентности). Классы эквивалентности = компоненты связности.</div>
+        <p>R = транзитивное замыкание idᵥ∪A_G (где A_G — матрица смежности как отношение).</p>
+        <p><strong>Область достижимости вершины v:</strong> C(v) = {u: u и v связаны} — компонента связности v.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 15: ПУТИ И ЦИКЛЫ -->
+  <!-- ============================================================ -->
+  <div class="section" id="graphs2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">15</div>
+      <div class="section-title">Простые пути и циклы. Деревья и леса. Цикломатическое число</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#59</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Цикл. Простой цикл. Простой путь</h3>
+        <p><strong>Цикл:</strong> путь с совпадающим началом и концом.</p>
+        <p><strong>Простой цикл:</strong> цикл, в котором все вершины различны (кроме совпадающих начала и конца). Длина > 2.</p>
+        <p><strong>Простой путь:</strong> путь, в котором все вершины различны.</p>
+        <div class="key"><strong>Принцип наименьшего числа:</strong> любое непустое подмножество ℕ содержит наименьший элемент.</div>
+        <div class="proof-block">
+          <div class="proof-title">Утверждение 11.1: Если u,v связанные, то существует простой путь из u в v</div>
+          <p>По принципу наименьшего числа среди всех путей из u в v выберем кратчайший. Докажем, что он простой. Если bы он был непростым, найдётся uᵢ=uⱼ, i&lt;j. Тогда можно срезать петлю и получить более короткий путь — противоречие с минимальностью. □</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#65–66</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Дерево. Мост. Лес</h3>
+        <p><strong>Дерево</strong> — связный граф, у которого каждое ребро является мостом.</p>
+        <p><strong>Мост</strong> — ребро, удаление которого увеличивает число компонент связности.</p>
+        <p><strong>Лес</strong> — граф, у которого каждое ребро является мостом (не обязательно связный).</p>
+        <div class="key"><strong>Теорема 12.2 (критерий леса):</strong> Следующие свойства равносильны:<br>
+        (1) Каждое ребро — мост<br>
+        (2) Для любых связанных u,v — единственный простой путь<br>
+        (3) Нет простых циклов длины > 2</div>
+        <div class="key"><strong>Следствие 12.3 (критерий дерева):</strong> То же + условие связности.</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#68</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Цикломатическое число. Критерий леса и дерева</h3>
+        <div class="key"><strong>Цикломатическое число:</strong> r(G) = m − n + c, где m=|E|, n=|V|, c — число компонент связности.</div>
+        <div class="key"><strong>Теорема 12.4:</strong> r(G)=0 ⟺ G — лес<br>
+        <strong>Следствие 12.5:</strong> Связный граф — дерево ⟺ m = n−1</div>
+        <p><strong>Утверждение 12.6:</strong> При добавлении ребра {x,y}: если x,y в одной компоненте — r растёт на 1; если в разных — r не меняется.</p>
+        <p><strong>Лемма 12.7:</strong> r(G) ≥ 0 для любого графа (инд. по рёбрам).</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#70–72</span>
+        <span class="item-label label-thm">Теоремы</span>
+        <h3>Висячие вершины. Остовное дерево. Корневые деревья</h3>
+        <p><strong>Изолированная вершина:</strong> d(v)=0. <strong>Висячая вершина:</strong> d(v)=1.</p>
+        <div class="key"><strong>Теорема 12.8:</strong> В дереве с ≥2 вершинами есть не менее двух висячих вершин.</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство (через следствие 12.5)</div>
+          <p>В дереве n≥2 вершин, n-1 рёбер. Пусть d₁,...,dₙ — степени. Изолированных нет (каждая — отдельная компонента связности, а дерево связно). По теореме о сумме: Σdᵢ = 2(n-1). Значит Σ(dᵢ-2) = -2. Каждое слагаемое ≥-1 (так как dᵢ≥1). Чтобы сумма была -2, хотя бы два слагаемых равны -1, т.е. хотя бы две висячие вершины. □</p>
+        </div>
+        <div class="key"><strong>Теорема 12.9 (об остовном дереве):</strong> В любом связном графе есть остовное дерево. Строим: удаляем нe-мосты пока они есть, пока не останется дерево.</div>
+        <p><strong>Корневое дерево:</strong> дерево с выделенной вершиной-корнем. Слои: слой 0 — корень, слой i+1 — вершины, не входящие в слои 0...i, но смежные со слоем i. Листья — висячие вершины, отличные от корня.</p>
+        <p><strong>Монотонное остовное дерево:</strong> Для любого ребра {u,v} одна вершина лежит выше другой. Теорема 13.1: в каждом связном графе существует.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 16: ОРГРАФЫ -->
+  <!-- ============================================================ -->
+  <div class="section" id="digraphs">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">16</div>
+      <div class="section-title">Ориентированные графы: степени, связность, ациклические орграфы</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#60–63</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Ориентированный граф. Степени. Достижимость. Сильная связность</h3>
+        <p><strong>Орграф</strong> G=(V,E): V — вершины, E — упорядоченные пары вершин (допускаются петли).</p>
+        <p><strong>Исходящая степень d⁺(v):</strong> число рёбер, выходящих из v. <strong>Входящая d⁻(v):</strong> входящих в v.</p>
+        <div class="key"><strong>Лемма 11.2:</strong> Σd⁺(v) = Σd⁻(v) = |E|</div>
+        <p><strong>Отношение достижимости R:</strong> рефлексивно и транзитивно (НЕ обязательно симметрично!).</p>
+        <div class="key"><strong>Отношение сильной связанности C:</strong> (u,v)∈C ⟺ (u,v)∈R и (v,u)∈R. Оно рефлексивно, симметрично и транзитивно — отношение эквивалентности. Классы = компоненты сильной связности.</div>
+        <p><strong>Сильно связный орграф:</strong> одна компонента сильной связности.</p>
+        <p><strong>Простой путь в рёбрах:</strong> все рёбра в пути различны (слабее, чем простой путь).</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#65</span>
+        <span class="item-label label-thm">Теорема 11.8</span>
+        <h3>Ациклические орграфы: три равносильных определения</h3>
+        <div class="key"><strong>Теорема 11.8:</strong> Следующие свойства равносильны:<br>
+        (1) Каждая компонента сильной связности — одна вершина<br>
+        (2) Орграф ациклический (нет циклов длины > 0)<br>
+        (3) Вершины нумеруются числами 1,...,n так, что все рёбра идут из меньшего в большее (топологическая сортировка)</div>
+        <div class="key"><strong>Лемма 11.9:</strong> В ациклическом орграфе есть вершина с d⁺=0 и вершина с d⁻=0.</div>
+        <p>Доказательство леммы: берём простой путь максимальной длины v₀,...,vₜ. Если бы из vₜ выходило ребро (vₜ,x), x∉{v₀,...,vₜ} — путь не максимальный. Если (vₜ,vᵢ) — цикл vᵢ,...,vₜ,vᵢ — противоречие ациклическому. Значит d⁺(vₜ)=0. Аналогично d⁻(v₀)=0.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 17: ЭЙЛЕР -->
+  <!-- ============================================================ -->
+  <div class="section" id="euler">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">17</div>
+      <div class="section-title">Эйлеровы графы</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#64</span>
+        <span class="item-label label-def">Определение</span>
+        <h3>Эйлеров цикл. Критерий эйлеровости</h3>
+        <p><strong>Эйлеров цикл</strong> — цикл, проходящий по каждому ребру ровно один раз.</p>
+        <div class="key"><strong>Теорема 11.6 (для орграфов):</strong> В орграфе без изолированных вершин есть эйлеров цикл ⟺ орграф сильно связен и d⁺(v)=d⁻(v) для всех v.</div>
+        <div class="key"><strong>Теорема 11.7 (для неориентированных):</strong> Граф без вершин нулевой степени содержит эйлеров цикл ⟺ он связен и степени всех вершин чётны.</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство (неориентированный случай)</div>
+          <p><strong>Необходимость (→):</strong> Эйлеров цикл проходит все вершины → граф связен. Каждый раз, заходя в вершину, мы из неё выходим → использовано k входящих и k исходящих рёбер → степень 2k чётная.</p>
+          <p><strong>Достаточность (←):</strong> Берём самый длинный путь простой в рёбрах. Если он не цикл — конечная вершина имеет нечётную степень (использовано нечётное количество рёбер) — противоречие. Если есть неиспользованное ребро из какой-то вершины пути — удлиняем, т.к. граф связен. □</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 18: ДЕРЕВЬЯ И ПОРЯДКИ -->
+  <!-- ============================================================ -->
+  <div class="section" id="trees">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">18</div>
+      <div class="section-title">Теорема Кэли. Порядки: Хассе, изоморфизм, фундированность</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#81</span>
+        <span class="item-label label-thm">Теорема Кэли</span>
+        <h3>Теорема Кэли о числе деревьев</h3>
+        <div class="key"><strong>Теорема Кэли:</strong> Количество остовных деревьев в полном графе на n пронумерованных вершинах равно n<sup>n-2</sup> при n≥2.</div>
+        <p>Доказательство (Джойал): Строим биекцию между функциями {1,...,n}→{1,...,n} и двухкорневыми деревьями (деревья с двумя пометками S и E). Количество функций = nⁿ, количество способов пометить две вершины = n², итого деревьев = nⁿ/n² = nⁿ⁻².</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 19: ПОРЯДКИ -->
+  <!-- ============================================================ -->
+  <div class="section" id="orders">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">19</div>
+      <div class="section-title">Частичные порядки: строгий, нестрогий, Хассе, изоморфизм, фундированность</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#73–74</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Строгий и нестрогий частичный порядок. Линейный порядок. Асимметричность</h3>
+        <div class="key"><strong>Строгий частичный порядок:</strong> антирефлексивное (aRa ложно) и транзитивное отношение.</div>
+        <div class="key"><strong>Строгий линейный порядок:</strong> строгий частичный порядок + для любых a≠b: aRb или bRa.</div>
+        <p><strong>Асимметричность (утв. 13.7):</strong> Строгий порядок асимметричен: aRb ⟹ ¬bRa. Если aRb и bRa, то по транзитивности aRa — противоречие антирефлексивности.</p>
+        <div class="key"><strong>Нестрогий частичный порядок (утв. 13.8):</strong> Рефлексивный, антисимметричный, транзитивный.<br>
+        Связь: нестрогий ↔ строгий + диагональ idₓ. (a≤b ↔ a&lt;b или a=b)</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#75–76</span>
+        <span class="item-label label-thm">Утв. 13.11–13.14</span>
+        <h3>Достижимость в ациклическом графе. Соседние элементы. Диаграмма Хассе</h3>
+        <p><strong>Утверждение 13.11:</strong> Для любого ациклического орграфа отношение ≤_G (достижимости) является нестрогим частичным порядком.</p>
+        <p><strong>Соседние элементы:</strong> x и y соседние (x непосредственно предшествует y), если x&lt;y и нет z: x&lt;z&lt;y.</p>
+        <p><strong>Утв. 13.12:</strong> Если ≤_G = ≤ и x,y соседние в ≤, то (x,y) — ребро G. (Промежуточных вершин нет → путь имеет длину 1.)</p>
+        <div class="key"><strong>Диаграмма Хассе H<sub>&lt;</sub>:</strong> граф с рёбрами = непосредственно предшествующие пары.<br>
+        <strong>Теорема 13.13:</strong> H<sub>&lt;</sub> ациклический.<br>
+        <strong>Лемма 13.14:</strong> Любой конечный порядок определяется своей диаграммой Хассе (a&lt;b ⟺ b достижима из a в H<sub>&lt;</sub>).</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#77–79</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Элементы порядка. Изоморфизм порядков. Операции с порядками</h3>
+        <p><strong>Наименьший</strong> элемент a: a≤x для всех x. <strong>Наибольший</strong>: x≤a для всех x.</p>
+        <p><strong>Минимальный</strong> элемент a: нет x&lt;a. <strong>Максимальный</strong>: нет x&gt;a.</p>
+        <p><strong>Отрезок [x,y]</strong> = {z: x≤z≤y}. <strong>Предельный элемент</strong>: нет непосредственного предшественника.</p>
+        <div class="key"><strong>Изоморфизм порядков:</strong> P≅Q, если существует биекция ϕ:P→Q, сохраняющая порядок: x&lt;y ⟺ ϕ(x)&lt;ϕ(y).</div>
+        <p><strong>Утв. 14.4:</strong> При изоморфизме сохраняются: наименьший/наибольший, минимальный/максимальный, отрезки (с их мощностью), предельные элементы.</p>
+        <div class="key"><strong>Теорема 14.5:</strong> Все линейные порядки на конечных множествах одинакового размера изоморфны. (Доказательство индукцией: наименьшие элементы соответствуют друг другу, оставшиеся — по ИП.)</div>
+        <div class="formula">Покоординатный порядок P×Q: (p₁,q₁)≤(p₂,q₂) ⟺ p₁≤p₂ и q₁≤q₂
+  (линейность может не сохраняться!)
+
+Лексикографический порядок P×Q: (p₁,q₁)≺(p₂,q₂) ⟺ p₁&lt;p₂, или p₁=p₂ и q₁&lt;q₂
+  (Лемма 14.8: линейность СОХРАНЯЕТСЯ)
+
+Сумма порядков P+Q: все элементы P меньше всех элементов Q
+  (линейность сохраняется)</div>
+        <p>Лексикографическое произведение и сумма некоммутативны.</p>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#80</span>
+        <span class="item-label label-thm">Теорема 14.12</span>
+        <h3>Три определения фундированного порядка</h3>
+        <div class="key"><strong>Теорема 14.12:</strong> Следующие свойства равносильны:<br>
+        (1) Любая убывающая цепь конечна (нет бесконечно убывающей a₁>a₂>...)<br>
+        (2) Каждое непустое подмножество имеет минимальный элемент<br>
+        (3) Принцип трансфинитной индукции: если ∀x∈P: (∀y&lt;x: A(y))→A(x), то A(x) верно для всех x.</div>
+        <p>Примеры фундированных: ℕ, любой конечный порядок. Нефундированный: Z (бесконечно убывающая цепь 0>-1>-2>...).</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 20: РАМСЕЙ -->
+  <!-- ============================================================ -->
+  <div class="section" id="ramsey">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">20</div>
+      <div class="section-title">Клики, независимые множества, теорема Рамсея</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#82–83</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Клика. Независимое множество. Числа Рамсея</h3>
+        <p><strong>Клика</strong> — множество вершин, каждая пара соединена ребром. ω(G) — кликовое число.</p>
+        <p><strong>Независимое множество</strong> — множество вершин, никакая пара не соединена. α(G) — число независимости.</p>
+        <p>ω(G) = α(Ḡ) (при переходе к дополнению клики ↔ независимые множества).</p>
+        <div class="key"><strong>Теорема Рамсея:</strong> Для любых k,n существует N₀ такое, что в любом графе на N≥N₀ вершинах есть клика размера k или независимое множество размера n. R(k,n) — минимальное такое N₀.</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#83–84</span>
+        <span class="item-label label-thm">Оценки</span>
+        <h3>Верхняя и нижняя оценки на числа Рамсея</h3>
+        <div class="key"><strong>Теорема 17.4 (верхняя оценка):</strong> R(k,n) ≤ C(k+n-2, k-1)</div>
+        <p>Из рекуррентности R(k,n) ≤ R(k-1,n)+R(k,n-1) и формулы C(n,k)=C(n-1,k-1)+C(n-1,k) по индукции.</p>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство рекуррентности R(k,n) ≤ R(k-1,n)+R(k,n-1)</div>
+          <p>В графе на N₀=R(k-1,n)+R(k,n-1) вершинах выберем произвольную вершину v. N₁ соседей и N₂ несоседей. Если N₁≥R(k-1,n) — в подграфе соседей есть клика размера k-1 или независимое k → в исходном клика k (добавляем v) или нез. k. Если N₂≥R(k,n-1) — аналогично. □</p>
+        </div>
+        <div class="key"><strong>Теорема 17.5 (нижняя оценка):</strong> R(k,k) > ⌊2^((k-1)/2)⌋ при k≥3</div>
+        <p>Вероятностное доказательство: случайный граф на n вершинах с вероятностью. Оцениваем вероятность наличия клики/нез. множества размера k. При n=⌊2^((k-1)/2)⌋ эта вероятность &lt;1, значит существует граф без них.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 21: РАСКРАСКИ -->
+  <!-- ============================================================ -->
+  <div class="section" id="coloring">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">21</div>
+      <div class="section-title">Раскраски вершин графа. Двудольные графы</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#85–87</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Правильная раскраска. Хроматическое число. Двудольный граф</h3>
+        <p><strong>Правильная раскраска</strong> в k цветов: c:V→{1,...,k}, такая что если {x,y}∈E, то c(x)≠c(y).</p>
+        <p><strong>χ(G)</strong> — хроматическое число (минимальное k).</p>
+        <div class="key"><strong>Критерий 1-раскрашиваемости:</strong> G не имеет рёбер ⟺ χ(G)=1.</div>
+        <div class="key"><strong>Теорема 18.1 (критерий 2-раскрашиваемости):</strong> G двухраскрашиваем ⟺ все циклы в G имеют чётную длину.</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство Теоремы 18.1</div>
+          <p><strong>→:</strong> При 2-раскраске цвета вдоль пути чередуются. Цикл нечётной длины вернулся бы в ту же вершину с другим цветом — противоречие.</p>
+          <p><strong>←:</strong> Фиксируем v₀, красим вершину x в 0 если parity(длины пути из v₀ в x) чётна, в 1 если нечётна. Это корректно (чётность длин одинакова по условию). Смежные вершины разного цвета: ребро {x,y} даёт путь длины odd(path)+1. □</p>
+          <p><strong>Булев куб:</strong> Красим в 0 вершины с чётным числом единиц, в 1 — с нечётным. Соседи отличаются в одной позиции → чётности числа единиц различаются. ✓</p>
+        </div>
+        <p><strong>Двудольный граф (L,R,E):</strong> V=L∪R, L∩R=∅, все рёбра между L и R.</p>
+        <p>Двудольные графы = бинарные отношения на L,R = подмножества L×R.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- РАЗДЕЛ 22: ПАРОСОЧЕТАНИЯ -->
+  <!-- ============================================================ -->
+  <div class="section" id="matching">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">22</div>
+      <div class="section-title">Паросочетания. Теорема Холла. Вершинные покрытия. Теорема Кёнига</div>
+      <div class="section-toggle">▼</div>
+    </div>
+    <div class="section-body">
+
+      <div class="item">
+        <span class="item-num">#88–90</span>
+        <span class="item-label label-def">Определения</span>
+        <h3>Паросочетание. Совершенное паросочетание. Регулярный граф</h3>
+        <p><strong>Паросочетание</strong> — подграф, у которого степени всех вершин равны 1. µ(G) — максимальный размер.</p>
+        <p><strong>Совершенное паросочетание:</strong> каждая вершина входит в паросочетание.</p>
+        <p>Число совершенных паросочетаний в K₂ₙ: P₂ₙ = (2n-1)!! = (2n-1)·(2n-3)···3·1 (формула через мультиномиальный коэффициент: (2n)! = (2!)ⁿ·n!·P₂ₙ).</p>
+        <div class="key"><strong>Теорема Холла:</strong> В двудольном графе G=(L,R,E) существует паросочетание размера |L| ⟺ для каждого S⊆L: |G(S)| ≥ |S| (условие Холла).</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство теоремы Холла (индукция по |L|)</div>
+          <p><strong>База:</strong> |L|=1. У единственной вершины есть сосед → включаем в паросочетание. ✓</p>
+          <p><strong>Случай 1:</strong> Существует S⊊L, ∅≠S, |S|=|G(S)|. Делим на два подграфа G' (S, G(S)) и G'' (L\S, R\G(S)). Для G' условие Холла выполнено по построению. Для G'': для X⊆L\S |G''(X)| ≥ |X|, т.к. |G(S∪X)|=|G(S)|+|G''(X)| ≥ |S∪X|=|S|+|X|. По ИП для каждого из них есть паросочетание нужного размера. Объединяем.</p>
+          <p><strong>Случай 2:</strong> Для любого ∅≠S⊊L: |G(S)| > |S|. Берём произвольное a∈L, соседа b∈R. Для подграфа G'=(L\{a}, R\{b}) условие Холла выполнено: |G'(X)| ≥ |G(X)|-1 ≥ |X|. По ИП есть паросочетание размера n-1. Добавляем ребро {a,b}. □</p>
+        </div>
+        <p><strong>Регулярный граф:</strong> степени всех вершин одинаковы.</p>
+        <div class="key"><strong>Лемма 18.6:</strong> В регулярном двудольном графе с d>0 есть совершенное паросочетание.</div>
+        <p>Доказательство: |L|=|R| (из |E|=d|L|=d|R|). Для S⊆L: d|S| рёбер, правых концов ≤d|G(S)| → |G(S)|≥|S|. ✓</p>
+        <div class="key"><strong>Следствие 18.7:</strong> В d-регулярном двудольном графе рёбра разбиваются на d совершенных паросочетаний (индукция: выделяем одно, остаток — (d-1)-регулярный).</div>
+      </div>
+
+      <div class="item">
+        <span class="item-num">#91–92</span>
+        <span class="item-label label-thm">Теоремы</span>
+        <h3>Вершинное покрытие. Теорема Кёнига</h3>
+        <p><strong>Вершинное покрытие S:</strong> у каждого ребра хотя бы один конец в S. τ(G) — минимальный размер.</p>
+        <div class="key"><strong>Лемма 18.10:</strong> S — вершинное покрытие ⟺ V\S — независимое множество.<br>
+        Следствие: τ(G) = n − α(G)</div>
+        <div class="key"><strong>Утв. 18.11:</strong> τ(G) ≥ µ(G) (каждое вершинное покрытие содержит по одному концу каждого ребра паросочетания).</div>
+        <div class="key"><strong>Теорема Кёнига:</strong> Для двудольного G: τ(G) = µ(G).</div>
+        <div class="proof-block">
+          <div class="proof-title">Доказательство теоремы Кёнига</div>
+          <p>Уже доказано τ≥µ. Докажем τ≤µ применив теорему Холла.</p>
+          <p>Возьмём минимальное вершинное покрытие X∪Y, X⊆L, Y⊆R. Строим G'=(X,G(X)\Y) и G''=(Y,G(Y)\X).</p>
+          <p>Проверяем условие Холла для G': для S⊆X, (X\S)∪Y∪G'(S) — вершинное покрытие. По минимальности: |G'(S)| ≥ |S|.</p>
+          <p>Аналогично для G''. По теореме Холла: в G' есть паросочетание размера |X|, в G'' — размера |Y|. Они не пересекаются → суммарное паросочетание размера |X|+|Y| ≥ τ. □</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    Дискретная математика, ВШЭ ЭАД 2024/25 &nbsp;·&nbsp; По конспектам А.А. Оноприенко &nbsp;·&nbsp; Подготовка к коллоквиуму
+  </footer>
+
+</div>
+
+<script>
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.section-toggle');
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    toggle.textContent = '▼';
+    toggle.classList.add('open');
+  } else {
+    body.style.display = 'none';
+    toggle.textContent = '▲';
+    toggle.classList.remove('open');
+  }
+}
+</script>
+
+</body>
+</html>
